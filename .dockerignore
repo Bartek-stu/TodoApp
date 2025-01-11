@@ -1,0 +1,4 @@
+infra/
+target/
+Dockerfile
+configuration.yml

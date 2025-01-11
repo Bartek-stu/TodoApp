@@ -1,0 +1,7 @@
+cosmos:
+  account: todoappcosmosacc
+  primary_key: sample-key
+  database_name: todoappdb
+telemetry:
+  log_level: info
+  app_insights_connection_string: sample-value

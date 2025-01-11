@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Your Todos</title>
+        <link rel="stylesheet" href="/static/style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Your Todos 📝</h1>
+
+            <!-- Add New Todo -->
+            <form
+                action="/me/todos"
+                method="POST"
+                class="add-todo-form"
+                enctype="application/x-www-form-urlencoded"
+            >
+                <input
+                    type="text"
+                    name="content"
+                    placeholder="Add a new todo..."
+                    required
+                />
+                <button type="submit">Add</button>
+            </form>
+
+            <!-- Todo List -->
+            <ul class="todo-list">
+                {% for todo in todos %}
+                <li class="todo-item {% if todo.done %}done{% endif %}">
+                    <span>{{ todo.content }}</span>
+
+                    <div class="actions">
+                        <!-- Toggle Done/Undone -->
+                        <button
+                            type="button"
+                            onclick="updateTodoStatus('{{ todo.id }}', {{ not todo.done }})"
+                        >
+                            {% if todo.done %}Undo{% else %}Done{% endif %}
+                        </button>
+
+                        <!-- Delete Todo -->
+                        <button
+                            type="button"
+                            class="delete-btn"
+                            onclick="deleteTodo('{{ todo.id }}')"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </li>
+                {% else %}
+                <li>No todos yet. Add one!</li>
+                {% endfor %}
+            </ul>
+
+            <a
+                href="/.auth/logout?post_logout_redirect_uri=/"
+                class="logout-btn"
+                >🚪 Logout</a
+            >
+        </div>
+
+        <script>
+            // PATCH: Toggle Done/Undone
+            async function updateTodoStatus(todoId, done) {
+                try {
+                    await fetch(`/me/todos/${todoId}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ done: done }),
+                    });
+                    location.reload();
+                } catch (error) {
+                    console.error("Failed to update todo:", error);
+                }
+            }
+
+            // DELETE: Remove Todo
+            async function deleteTodo(todoId) {
+                try {
+                    await fetch(`/me/todos/${todoId}`, { method: "DELETE" });
+                    location.reload();
+                } catch (error) {
+                    console.error("Failed to delete todo:", error);
+                }
+            }
+        </script>
+    </body>
+</html>
