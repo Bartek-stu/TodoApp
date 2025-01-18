@@ -1,0 +1,41 @@
+name: Build and deploy Python project to Azure Function App - todoapp-clear-todos-func
+
+on:
+  push:
+    paths:
+      - "functions/**"
+env:
+  AZURE_FUNCTIONAPP_NAME: "todoapp-clear-todos-func"
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "./functions"
+  PYTHON_VERSION: "3.9"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@v3
+
+      - name: Setup Python ${{ env.PYTHON_VERSION }} Environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: "Resolve Project Dependencies Using Pip"
+        shell: bash
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+          popd
+
+      - name: "Run Azure Functions Action"
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_98895CBCBA8D4B2A9CFDCF49BEF9ECCB }}
+          scm-do-build-during-deployment: true
+          enable-oryx-build: true

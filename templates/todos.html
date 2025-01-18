@@ -28,7 +28,7 @@
 
             <!-- Todo List -->
             <ul class="todo-list">
-                {% for todo in todos %}
+                {% for todo in todos | reverse %}
                 <li class="todo-item {% if todo.done %}done{% endif %}">
                     <span>{{ todo.content }}</span>
 

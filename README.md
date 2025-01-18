@@ -1,4 +1,4 @@
-# 🦀 Todo Application Backend in Rust 🦀
+# 🦀 Todo App based on Azure infrastructure 🦀
 ## Building
 Binary:
 ```bash
@@ -56,7 +56,12 @@ This project leverages **Azure Cloud Infrastructure** for deploying and managing
   - **System Assigned Identity** for secure access.
   - **Built-in Authentication** enabled.
 
-### 7. **Monitoring and Alerting**
+### 7. **Azure App Function**
+- Runs python script to cleanup old todos marked as done.
+- Features:
+  - **Scheduled Trigger**: Runs every 20 minutes.
+
+### 8. **Monitoring and Alerting**
 
 - **5xx Error Alert**: Triggers on **any server error** detected.
 - **Availability Test**: Pings the `/healthcheck` endpoint every **5 minutes** from `"us-fl-mia-edge"`.
@@ -76,3 +81,6 @@ This project leverages **Azure Cloud Infrastructure** for deploying and managing
 - Proactive error detection through **alert rules** and **health checks**.
 
 ---
+
+## 📊 Resources visualization
+![Azure Resources](img/resources.png)

@@ -1,5 +1,5 @@
 /target
-/infra
+/functions/venv
 
 .terraform/
 

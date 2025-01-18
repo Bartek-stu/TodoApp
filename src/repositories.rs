@@ -150,7 +150,7 @@ impl TodoRepository for CosmosTodoRepository {
     )]
     async fn delete_for_user_by_id(&self, user_id: UserId, todo_id: TodoId) -> anyhow::Result<()> {
         let statement = format!(
-            "SELECT * FROM {} t WHERE t.created_by = '{}' AND t.id = '{}' ",
+            "SELECT * FROM {} t WHERE t.created_by = '{}' AND t.id = '{}'",
             Todo::COLLECTION_NAME,
             user_id,
             todo_id
